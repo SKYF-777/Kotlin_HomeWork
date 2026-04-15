@@ -8,7 +8,6 @@ class ShoeCard(
 ) : ProductCard(name, brand, price, ProductType.SHOE) {
 
     override fun printInfo() {
-        super.printInfo()
-        println("Size: $size")
+        println("Name: ${this.name} Brend: ${this.brand} Price: ${this.price} ProductType: ${this.productType.title} Size: $size")
     }
 }

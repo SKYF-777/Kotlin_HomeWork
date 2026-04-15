@@ -1,14 +1,12 @@
 package corparation
 
-open class Worker(
+abstract class Worker(
     val name: String,
     val age:Int = 0,
     val id:Int = 0,
     val position: Position
 ) {
-    open fun work(){
-        println("I'm working now ...")
-    }
+    abstract fun work()
 
     open fun printInfoEmployees(){
         print("Name: ${this.name}, Age: ${this.age} Id: ${this.id}, Position: ${this.position.title} \n")
