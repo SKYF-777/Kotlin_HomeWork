@@ -9,6 +9,10 @@ abstract class Worker(
     abstract fun work()
 
     open fun printInfoEmployees(){
-        print("Name: ${this.name}, Age: ${this.age} Id: ${this.id}, Position: ${this.position.title} \n")
+        print(this)
+    }
+
+    override fun toString(): String {
+        return "Name: ${this.name}, Age: ${this.age} Id: ${this.id}, Position: ${this.position.title} \n"
     }
 }

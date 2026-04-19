@@ -7,7 +7,8 @@ class FoodCard(
     val caloric: Int
 ):ProductCard(name,brand,price, ProductType.FOOD) {
 
-    override fun printInfo() {
-        println("Name: ${this.name} Brend: ${this.brand} Price: ${this.price} ProductType: ${this.productType.title} Caloric: $caloric")
+
+    override fun toString(): String {
+        return "Name: ${this.name} Brend: ${this.brand} Price: ${this.price} ProductType: ${this.productType.title} Caloric: $caloric"
     }
 }

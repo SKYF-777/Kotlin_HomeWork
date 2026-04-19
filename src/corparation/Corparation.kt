@@ -24,14 +24,14 @@ fun main() {
 //    val consultant = Consultant("Max", age = 45, id = 9576, "Consultant")
 //    val assistant = Assistant("Helen", 20, id = 9856,"Assistant" )
     val accountant =Accountant("Chester", 45, id = 4792, "Accountant")
-//    accountant.work()
-    val employees: MutableList<Worker> = accountant.loadAllCardsEmployee()
-    for(employee in employees) {
-        if (employee is Cleaner){
-            employee.clean()
-        }
-        if (employee is Supplier){
-            employee.buyThings()
-        }
-    }
+    accountant.work()
+//    val employees: MutableList<Worker> = accountant.loadAllCardsEmployee()
+//    for(employee in employees) {
+//        if (employee is Cleaner){
+//            employee.clean()
+//        }
+//        if (employee is Supplier){
+//            employee.buyThings()
+//        }
+//    }
 }
