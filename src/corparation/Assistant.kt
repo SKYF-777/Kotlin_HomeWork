@@ -5,9 +5,17 @@ class Assistant(
     age: Int = 0,
     id: Int = 0,
     val positionAssistant: String
-):Worker(name = name, age = age, id = id, position = Position.ASSISTANT) {
+):Worker(name = name, age = age, id = id, position = Position.ASSISTANT), Cleaner, Supplier {
     override fun work() {
         println("I'm go to the coffee for my director...")
+    }
+
+    override fun clean() {
+        println("My position is Assistant. I'm cleaning workplace...")
+    }
+
+    override fun buyThings() {
+        println("My position is Assistant. I'm buying things...")
     }
 
     fun bringCoffee(drinkName: String = "Cappuccino", count:Int = 1): String {

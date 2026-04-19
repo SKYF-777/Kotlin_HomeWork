@@ -20,12 +20,18 @@ package corparation
 //}
 
 fun main() {
-    val director = Director("Andrey", 35, id = 9876, "Director")
-    val consultant = Consultant("Max", age = 45, id = 9576, "Consultant")
-    val assistant = Assistant("Helen", 20, id = 9856,"Assistant" )
+//    val director = Director("Andrey", 35, id = 9876, "Director")
+//    val consultant = Consultant("Max", age = 45, id = 9576, "Consultant")
+//    val assistant = Assistant("Helen", 20, id = 9856,"Assistant" )
     val accountant =Accountant("Chester", 45, id = 4792, "Accountant")
-    val employees = listOf<Worker>(director,consultant, assistant,accountant)
+//    accountant.work()
+    val employees: MutableList<Worker> = accountant.loadAllCardsEmployee()
     for(employee in employees) {
-        employee.work()
+        if (employee is Cleaner){
+            employee.clean()
+        }
+        if (employee is Supplier){
+            employee.buyThings()
+        }
     }
 }

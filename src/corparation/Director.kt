@@ -5,10 +5,15 @@ class Director(
     age: Int,
     id: Int,
     val positionDirector: String
-): Worker(name = name,age = age,id = id, position = Position.DIRECTOR) {
+): Worker(name = name,age = age,id = id, position = Position.DIRECTOR), Supplier {
     override fun work(){
         println("I'm drinking coffee...")
     }
+
+    override fun buyThings() {
+        println("My position is Director. I'm buying things...")
+    }
+
     fun takeCoffee(assistant: Assistant){
         val drinkName: String = assistant.bringCoffee()
         println("Thank tou, ${assistant.name}! The $drinkName is vary tasty :)")

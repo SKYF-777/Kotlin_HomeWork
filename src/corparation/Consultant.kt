@@ -7,9 +7,13 @@ class Consultant(
     age: Int = 0,
     id: Int = 0,
     val positionConsultant: String
-):Worker(name = name, age = age, id = id, position = Position.CONSULTANT) {
+):Worker(name = name, age = age, id = id, position = Position.CONSULTANT), Cleaner {
     override fun work() {
         serveCustomers()
+    }
+
+    override fun clean() {
+        println("My position is Consultant. I'm cleaning workplace...")
     }
 
     fun serveCustomers():Int {
