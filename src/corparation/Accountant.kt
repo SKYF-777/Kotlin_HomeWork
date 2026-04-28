@@ -5,8 +5,7 @@ import java.io.File
 class Accountant(
     name: String,
     age: Int,
-    id: Int,
-    val positionAccountant: String
+    id: Int
 ) : Worker(name, age, id, Position.ACCOUNTANT),Cleaner,Supplier {
 
     private val fileProductCards = File("product_cards.txt")
@@ -42,7 +41,23 @@ class Accountant(
                 OperationCode.REGISTER_NEW_EMPLOYEE ->registerNewEmployee()
                 OperationCode.FIRE_AN_EMPLOYEE -> fireAnEmployee()
                 OperationCode.SHOW_ALL_EMPLOYEES -> showAllEmployees()
+                OperationCode.CHANGE_SALARY -> changeSalary()
             }
+        }
+    }
+
+    private  fun changeSalary() {
+        print("Enter employee's id to change salary: ")
+        val id = readln().toInt()
+        print("Enter new salary: ")
+        val salary = readln().toInt()
+        val cards = loadAllCardsEmployee()
+        fileEmployees.writeText("")
+        for(card in cards){
+            if(card.id == id){
+               card.salary = salary
+            }
+            saveWorkerToFile(card)
         }
     }
 
@@ -173,49 +188,40 @@ class Accountant(
     }
 
     private fun registerNewEmployee() {
-        val employeeTypes = Position.entries
+        val positions = Position.entries
         print("Choose position -  ")
-        for ((index, type) in employeeTypes.withIndex()) {
-            print("$index - ${type.title}")
-            if (index < employeeTypes.size - 1) {
+        for ((index, position) in positions.withIndex()) {
+            print("$index - ${position.title}")
+            if (index < positions.size - 1) {
                 print(", ")
             } else {
                 print(": ")
             }
         }
-        val employeeTypeIndex = readln().toInt()
-        val employeeType: Position = employeeTypes[employeeTypeIndex]
+        val positionIndex = readln().toInt()
+        val position: Position = positions[positionIndex]
         print("Enter id: ")
-        val employeeId = readln().toInt()
+        val id = readln().toInt()
         print("Enter name: ")
-        val employeeName = readln()
+        val name = readln()
         print("Enter age: ")
-        val employeeAge = readln().toInt()
-        val cardEmploy = when (employeeType) {
+        val age = readln().toInt()
+        print("Enter salary: ")
+        val Salary = readln().toInt()
+        val worker = when (position) {
 
-            Position.DIRECTOR -> {
-                val positionDirector = "Director"
-                Director(employeeName, employeeAge, employeeId, positionDirector,)
-            }
-            Position.ACCOUNTANT -> {
-                val positionAccountant = "Accountant"
-                Accountant(employeeName, employeeAge, employeeId, positionAccountant,)
-            }
-            Position.ASSISTANT -> {
-                val positionAssistant = "Assistant "
-                Assistant(employeeName, employeeAge, employeeId, positionAssistant,)
-            }
-            Position.CONSULTANT -> {
-                val positionConsultant = "Consultant"
-                Consultant(employeeName, employeeAge, employeeId, positionConsultant,)
-            }
+            Position.DIRECTOR -> Director(name, age, id)
+            Position.ACCOUNTANT -> Accountant(name, age, id)
+            Position.ASSISTANT -> Assistant(name, age, id)
+            Position.CONSULTANT -> Consultant(name, age, id)
         }
-        saveWorkerToFile(cardEmploy)
+        worker.salary = Salary
+        saveWorkerToFile(worker)
     }
 
     private fun fireAnEmployee(){
         val cards = loadAllCardsEmployee()
-        print("Enter id employee: ")
+        print("Enter employee's id to fire: ")
         val id = readln().toInt()
         cards.removeIf { it.id == id }
         fileEmployees.writeText("")
@@ -234,33 +240,23 @@ class Accountant(
         if(employees.isEmpty()){
             return cards
         }
-        val cardsAsString = employees.split("\n")
-        for (cardAsString in cardsAsString) {
-            val properties = cardAsString.split("%")
+        val employeesAsString = employees.split("\n")
+        for (employeeAsString in employeesAsString) {
+            val properties = employeeAsString.split("%")
             val name = properties[0]
             val age = properties[1].toInt()
             val id = properties[2].toInt()
-            val type = properties.last()
-            val employeeType = Position.valueOf(type)
-            val employeeCard = when (employeeType) {
-                Position.DIRECTOR -> {
-                    val positionDirector = "Director"
-                    Director(name, age, id, positionDirector,)
-                }
-                Position.ACCOUNTANT -> {
-                    val positionAccountant = "Accountant"
-                    Accountant(name, age, id, positionAccountant,)
-                }
-                Position.ASSISTANT -> {
-                    val positionAssistant = "Assistant "
-                    Assistant(name, age, id, positionAssistant,)
-                }
-                Position.CONSULTANT -> {
-                    val positionConsultant = "Consultant"
-                    Consultant(name, age, id, positionConsultant,)
-                }
+            val salary = properties[3].toInt()
+            val positionAsText = properties.last()
+            val position = Position.valueOf(positionAsText)
+            val worker = when (position) {
+                Position.DIRECTOR -> Director(name, age, id)
+                Position.ACCOUNTANT -> Accountant(name, age, id)
+                Position.ASSISTANT -> Assistant(name, age, id)
+                Position.CONSULTANT -> Consultant(name, age, id)
             }
-            cards.add(employeeCard)
+            worker.salary = salary
+            cards.add(worker)
         }
         return cards
     }
@@ -272,27 +268,8 @@ class Accountant(
         }
     }
 
-    private fun saveWorkerToFile(employeeCard: Worker) {
-        fileEmployees.appendText("${employeeCard.name}%${employeeCard.age}%${employeeCard.id}%")
-        when (employeeCard) {
-            is Director -> {
-                fileEmployees.appendText("${employeeCard.positionDirector}%")
-            }
-
-            is Accountant -> {
-                fileEmployees.appendText("$positionAccountant%")
-            }
-
-            is Assistant -> {
-                fileEmployees.appendText("${employeeCard.positionAssistant}%")
-            }
-
-            is Consultant ->{
-                fileEmployees.appendText("${employeeCard.positionConsultant}%")
-
-            }
-        }
-        fileEmployees.appendText("${employeeCard.position}\n")
+    private fun saveWorkerToFile(worker: Worker) {
+        fileEmployees.appendText("${worker.name}%${worker.age}%${worker.id}%${worker.salary}%${worker.position}\n")
     }
 
 }

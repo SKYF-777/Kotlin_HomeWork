@@ -23,7 +23,7 @@ fun main() {
 //    val director = Director("Andrey", 35, id = 9876, "Director")
 //    val consultant = Consultant("Max", age = 45, id = 9576, "Consultant")
 //    val assistant = Assistant("Helen", 20, id = 9856,"Assistant" )
-    val accountant =Accountant("Chester", 45, id = 4792, "Accountant")
+    val accountant =Accountant("Chester", 45, id = 4792)
     accountant.work()
 //    val employees: MutableList<Worker> = accountant.loadAllCardsEmployee()
 //    for(employee in employees) {

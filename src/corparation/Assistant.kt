@@ -2,9 +2,8 @@ package corparation
 
 class Assistant(
     name: String,
-    age: Int = 0,
-    id: Int = 0,
-    val positionAssistant: String
+    age: Int,
+    id: Int
 ):Worker(name = name, age = age, id = id, position = Position.ASSISTANT), Cleaner, Supplier {
     override fun work() {
         println("I'm go to the coffee for my director...")
