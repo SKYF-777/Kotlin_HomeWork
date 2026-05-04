@@ -21,11 +21,17 @@ fun main() {
     print("Enter 2nd weight: ")
     val secondWeight = readln().toInt()
 
-    val first = profile.Person(name = firstName, age = firstAge, weight = firstWeight, height = firstHeight)
-    val second = profile.Person(name = secondName, age = secondAge, weight = secondWeight, height = secondHeight)
+    val first = profile.Person(name = firstName, weight = firstWeight, height = firstHeight)
+    val second = profile.Person(name = secondName, weight = secondWeight, height = secondHeight)
+
+    first.age = firstAge
+    second.age = secondAge
 
     first.printInfo()
     second.printInfo()
+
+    first.age = 0
+    second.age = 0
 
     first.sayHello()
     second.sayHello()

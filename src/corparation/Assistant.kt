@@ -3,8 +3,15 @@ package corparation
 class Assistant(
     name: String,
     age: Int,
+    salary: Int,
     id: Int
-):Worker(name = name, age = age, id = id, position = Position.ASSISTANT), Cleaner, Supplier {
+):Worker(
+    name = name,
+    age = age,
+    id = id,
+    salary = salary,
+    position = Position.ASSISTANT
+), Cleaner, Supplier {
     override fun work() {
         println("I'm go to the coffee for my director...")
     }

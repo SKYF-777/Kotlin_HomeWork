@@ -3,8 +3,15 @@ package corparation
 class Director(
     name: String,
     age: Int,
+    salary: Int,
     id: Int
-): Worker(name = name,age = age,id = id, position = Position.DIRECTOR), Supplier {
+): Worker(
+    name = name,
+    age = age,
+    id = id,
+    salary = salary,
+    position = Position.DIRECTOR
+), Supplier {
     override fun work(){
         println("I'm drinking coffee...")
     }
