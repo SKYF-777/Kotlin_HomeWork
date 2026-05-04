@@ -3,8 +3,12 @@ package profile
 class Person(
     private val name: String,
     private val height: Int,
+    var lastName: String,
     private val weight: Int
 ) {
+
+    val fullName: String
+    get() = "$name $lastName"
 
     var age:Int = 18
         set(value) {
