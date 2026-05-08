@@ -1,7 +1,5 @@
 package corparation
 
-import java.io.File
-
 class Accountant(
     name: String,
     age: Int,
@@ -15,8 +13,8 @@ class Accountant(
     position = Position.ACCOUNTANT
 ),Cleaner,Supplier {
 
-    private val fileProductCards = File("product_cards.txt")
-    private val fileEmployees = File("employees.txt")
+    private val productRepository = ProductRepository()
+    private val workerRepository = WorkerRepository()
 
     override fun clean() {
         println("My position is Accountant. I'm cleaning workplace...")
@@ -58,97 +56,23 @@ class Accountant(
         val id = readln().toInt()
         print("Enter new salary: ")
         val salary = readln().toInt()
-        val cards = loadAllCardsEmployee()
-        fileEmployees.writeText("")
-        for(card in cards){
-            if(card.id == id){
-               card.setSalary(salary)
-            }
-            saveWorkerToFile(card)
-        }
+        workerRepository.changeSalary(id, salary)
     }
 
     private fun removeProductCard() {
-        val cards: MutableList<ProductCard> = loadAllCards()
         print("Enter name of card for removing: ")
         val name = readln()
-        for(card in cards){
-            if(card.name == name){
-                cards.remove(card)
-                break
-            }
-        }
-        fileProductCards.writeText("")
-        for(card in cards){
-            saveProductCardToFile(card)
-        }
-    }
-
-    private fun loadAllCards(): MutableList<ProductCard> {
-        val cards: MutableList<ProductCard> = mutableListOf<ProductCard>()
-
-        if (!fileProductCards.exists()) fileProductCards.createNewFile()
-
-        val content = fileProductCards.readText().trim()
-
-        if(content.isEmpty()){
-            return cards
-        }
-        val cardsAsString = content.split("\n")
-        for (cardAsString in cardsAsString) {
-            val properties = cardAsString.split("%")
-            val name = properties[0]
-            val brand = properties[1]
-            val price = properties[2].toInt()
-            val type = properties.last()
-            val productType = ProductType.valueOf(type)
-            val productCard = when (productType) {
-                ProductType.FOOD ->{
-                    val caloric = properties[3].toInt()
-                    FoodCard(name, brand, price, caloric)
-                }
-                ProductType.APPLIANCE ->{
-                    val wattage = properties[3].toInt()
-                    ApplianceCard(name, brand, price, wattage)
-                }
-                ProductType.SHOE ->{
-                    val size = properties[3].toFloat()
-                    ShoeCard(name, brand, price, size)
-                }
-            }
-            cards.add(productCard)
-        }
-        return cards
+        productRepository.removeProductCard(name)
     }
 
     private fun showAllItems() {
-        val cards = loadAllCards()
+        val cards = productRepository.loadAllCards()
         for (card in cards){
             card.printInfo()
         }
 
     }
 
-    private fun saveProductCardToFile(productCard: ProductCard) {
-        fileProductCards.appendText("${productCard.name}%${productCard.brand}%${productCard.price}%")
-        when (productCard) {
-            is FoodCard -> {
-                val caloric = productCard.caloric
-                fileProductCards.appendText("$caloric%")
-            }
-
-            is ShoeCard -> {
-                val size = productCard.size
-                fileProductCards.appendText("$size%")
-            }
-
-            is ApplianceCard -> {
-                val wattage = productCard.wattage
-                fileProductCards.appendText("$wattage%")
-            }
-        }
-        fileProductCards.appendText("${productCard.productType}\n")
-    }
 
     private fun registerNewItem() {
         val productTypes = ProductType.entries
@@ -191,7 +115,7 @@ class Accountant(
 
             }
         }
-        saveProductCardToFile(card)
+        productRepository.registerNewItem(card)
     }
 
     private fun registerNewEmployee() {
@@ -222,59 +146,20 @@ class Accountant(
             Position.ASSISTANT -> Assistant(name, age, salary, id)
             Position.CONSULTANT -> Consultant(name, age, salary, id)
         }
-        saveWorkerToFile(worker)
+        workerRepository.registerNewEmployee(worker)
     }
 
     private fun fireAnEmployee(){
-        val cards = loadAllCardsEmployee()
         print("Enter employee's id to fire: ")
         val id = readln().toInt()
-        cards.removeIf { it.id == id }
-        fileEmployees.writeText("")
-        for(card in cards){
-            saveWorkerToFile(card)
-        }
-    }
-
-    fun loadAllCardsEmployee(): MutableList<Worker> {
-        val cards: MutableList<Worker> = mutableListOf<Worker>()
-
-        if (!fileEmployees.exists()) fileEmployees.createNewFile()
-
-        val employees = fileEmployees.readText().trim()
-
-        if(employees.isEmpty()){
-            return cards
-        }
-        val employeesAsString = employees.split("\n")
-        for (employeeAsString in employeesAsString) {
-            val properties = employeeAsString.split("%")
-            val name = properties[0]
-            val age = properties[1].toInt()
-            val id = properties[2].toInt()
-            val salary = properties[3].toInt()
-            val positionAsText = properties.last()
-            val position = Position.valueOf(positionAsText)
-            val worker = when (position) {
-                Position.DIRECTOR -> Director(name, age, salary, id)
-                Position.ACCOUNTANT -> Accountant(name, age, salary, id)
-                Position.ASSISTANT -> Assistant(name, age, salary, id)
-                Position.CONSULTANT -> Consultant(name, age, salary, id)
-            }
-            cards.add(worker)
-        }
-        return cards
+        workerRepository.fireAnEmployee(id)
     }
 
     private fun showAllEmployees() {
-        val cards = loadAllCardsEmployee()
+        val cards = workerRepository.loadAllCardsEmployee()
         for (card in cards){
             card.printInfoEmployees()
         }
-    }
-
-    private fun saveWorkerToFile(worker: Worker) {
-        fileEmployees.appendText("${worker.name}%${worker.age}%${worker.id}%${worker.getSalary()}%${worker.position}\n")
     }
 
 }

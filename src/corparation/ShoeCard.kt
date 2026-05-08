@@ -9,6 +9,6 @@ class ShoeCard(
 
 
     override fun toString(): String {
-        return "Name: ${this.name} Brend: ${this.brand} Price: ${this.price} ProductType: ${this.productType.title} Size: $size"
+        return "Name: ${this.name} Brand: ${this.brand} Price: ${this.price} ProductType: ${this.productType.title} Size: $size"
     }
 }

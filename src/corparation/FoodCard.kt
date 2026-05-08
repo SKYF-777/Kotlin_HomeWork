@@ -9,6 +9,6 @@ class FoodCard(
 
 
     override fun toString(): String {
-        return "Name: ${this.name} Brend: ${this.brand} Price: ${this.price} ProductType: ${this.productType.title} Caloric: $caloric"
+        return "Name: ${this.name} Brand: ${this.brand} Price: ${this.price} ProductType: ${this.productType.title} Caloric: $caloric"
     }
 }
