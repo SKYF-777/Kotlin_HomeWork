@@ -7,7 +7,8 @@ class WorkerRepository {
     private val fileEmployees = File("employees.txt")
     val workers = loadAllCardsEmployee()
 
-    fun registerNewEmployee(worker:Worker){  workers.add(worker)
+    fun registerNewEmployee(worker:Worker){
+        workers.add(worker)
     }
 
     fun changeSalary(id: Int,salary:Int) {

@@ -5,33 +5,38 @@ import java.io.File
 class ProductRepository {
 
     private val fileProductCards = File("product_cards.txt")
+    val productCards  = loadAllCards()
 
     fun registerNewItem(productCard: ProductCard){
-        saveProductCardToFile(productCard)
+        productCards.add(productCard)
     }
 
-    private fun saveProductCardToFile(productCard: ProductCard) {
-        fileProductCards.appendText("${productCard.name}%${productCard.brand}%${productCard.price}%")
-        when (productCard) {
-            is FoodCard -> {
-                val caloric = productCard.caloric
-                fileProductCards.appendText("$caloric%")
-            }
+    fun saveChanges(){
+    val content = StringBuilder()
+        for (productCard in productCards){
+            content.append("${productCard.name}%${productCard.brand}%${productCard.price}%")
+            when (productCard) {
+                is FoodCard -> {
+                    val caloric = productCard.caloric
+                    content.append("$caloric%")
+                }
 
-            is ShoeCard -> {
-                val size = productCard.size
-                fileProductCards.appendText("$size%")
-            }
+                is ShoeCard -> {
+                    val size = productCard.size
+                    content.append("$size%")
+                }
 
-            is ApplianceCard -> {
-                val wattage = productCard.wattage
-                fileProductCards.appendText("$wattage%")
+                is ApplianceCard -> {
+                    val wattage = productCard.wattage
+                    content.append("$wattage%")
+                }
             }
+            content.append("${productCard.productType}\n")
         }
-        fileProductCards.appendText("${productCard.productType}\n")
+        fileProductCards.writeText(content.toString())
     }
 
-    fun loadAllCards(): MutableList<ProductCard> {
+    private fun loadAllCards(): MutableList<ProductCard> {
         val cards: MutableList<ProductCard> = mutableListOf()
 
         if (!fileProductCards.exists()) fileProductCards.createNewFile()
@@ -69,16 +74,11 @@ class ProductRepository {
     }
 
     fun removeProductCard(name:String) {
-        val cards: MutableList<ProductCard> = loadAllCards()
-        for(card in cards){
+        for(card in productCards){
             if(card.name == name){
-                cards.remove(card)
+                productCards.remove(card)
                 break
             }
-        }
-        fileProductCards.writeText("")
-        for(card in cards){
-            saveProductCardToFile(card)
         }
     }
 
