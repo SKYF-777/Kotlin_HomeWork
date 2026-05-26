@@ -2,7 +2,7 @@ package corparation
 
 import java.io.File
 
-class WorkerRepository {
+object WorkerRepository {
 
     private val fileEmployees = File("employees.txt")
     val workers = loadAllCardsEmployee()
@@ -29,6 +29,7 @@ class WorkerRepository {
     }
 
     private fun loadAllCardsEmployee(): MutableList<Worker> {
+        println("loadAllCardsEmployee")
         val employees: MutableList<Worker> = mutableListOf()
 
         if (!fileEmployees.exists()) fileEmployees.createNewFile()
